@@ -1,0 +1,242 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description"
+        content="LinguaNest Admin Panel — Manage volunteers, review applications, handle complaints, and monitor platform health.">
+    <title>LinguaNest — Admin Panel</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Space+Grotesk:wght@400;500;600;700&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="css/global.css">
+    <link rel="stylesheet" href="css/dashboard.css">
+    <link rel="icon" type="image/svg+xml"
+        href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🌍</text></svg>">
+</head>
+
+<body>
+    <div class="dashboard-layout">
+        <!-- Sidebar -->
+        <aside class="sidebar" id="sidebar">
+            <div class="sidebar-header">
+                <div class="logo-icon">
+                    <svg width="28" height="28" viewBox="0 0 32 32" fill="none">
+                        <circle cx="16" cy="16" r="14" stroke="var(--blue-300)" stroke-width="2" />
+                        <circle cx="16" cy="16" r="6" stroke="var(--blue-300)" stroke-width="1.5" />
+                        <path d="M16 2V30" stroke="var(--blue-300)" stroke-width="1.5" opacity="0.5" />
+                    </svg>
+                </div>
+                <span class="logo-text">Lingua<span class="logo-accent">Nest</span></span>
+            </div>
+
+            <nav class="sidebar-nav">
+                <span class="sidebar-section-title">Admin</span>
+                <a href="#" class="sidebar-link active" data-section="overview">
+                    <span class="link-icon">📊</span>
+                    <span>Overview</span>
+                </a>
+                <a href="#" class="sidebar-link" data-section="applications">
+                    <span class="link-icon">📝</span>
+                    <span>Applications</span>
+                </a>
+                <a href="#" class="sidebar-link" data-section="complaints">
+                    <span class="link-icon">⚠️</span>
+                    <span>Complaints</span>
+                </a>
+                <a href="#" class="sidebar-link" data-section="users">
+                    <span class="link-icon">👥</span>
+                    <span>Users</span>
+                </a>
+
+                <span class="sidebar-section-title">Monitor</span>
+                <a href="#" class="sidebar-link" data-section="groups">
+                    <span class="link-icon">📚</span>
+                    <span>Groups</span>
+                </a>
+                <a href="#" class="sidebar-link" data-section="ghosting">
+                    <span class="link-icon">🛡️</span>
+                    <span>Anti-Ghosting</span>
+                </a>
+                <a href="#" class="sidebar-link" data-section="reports">
+                    <span class="link-icon">📈</span>
+                    <span>Reports</span>
+                </a>
+
+                <span class="sidebar-section-title">Settings</span>
+                <a href="#" class="sidebar-link" data-section="settings">
+                    <span class="link-icon">⚙️</span>
+                    <span>Settings</span>
+                </a>
+            </nav>
+
+            <div class="sidebar-footer">
+                <div class="sidebar-user" id="sidebarUser">
+                    <div class="user-avatar" style="background: linear-gradient(135deg, #ef4444, #dc2626);">AD</div>
+                    <div class="user-info">
+                        <div class="user-name">Admin</div>
+                        <div class="user-role">Administrator</div>
+                    </div>
+                </div>
+                <a href="index.html" class="sidebar-link" style="margin-top: var(--space-3);">
+                    <span class="link-icon">🚪</span>
+                    <span>Log Out</span>
+                </a>
+            </div>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="dashboard-main">
+            <button class="sidebar-toggle" id="sidebarToggle">☰</button>
+
+            <!-- Top Bar -->
+            <div class="dashboard-topbar">
+                <div class="topbar-left">
+                    <h1>Admin Dashboard 🛡️</h1>
+                    <p>Platform overview and management</p>
+                </div>
+                <div class="topbar-right">
+                    <button class="topbar-btn" id="notifBtn" title="Notifications">
+                        🔔
+                        <span class="notification-dot"></span>
+                    </button>
+                    <button class="btn btn-secondary" onclick="window.resetAllData()">
+                        🔄 Reset Demo Data
+                    </button>
+                </div>
+            </div>
+
+            <!-- Stats Cards -->
+            <div class="stats-cards">
+                <!-- Dynamically populated -->
+            </div>
+
+            <!-- Dashboard Grid -->
+            <div class="dashboard-grid">
+                <!-- Pending Applications -->
+                <div class="dashboard-card">
+                    <div class="card-header">
+                        <h3>📝 Pending Applications</h3>
+                    </div>
+                    <div id="applicationsList">
+                        <!-- Dynamically populated -->
+                    </div>
+                </div>
+
+                <!-- Complaints -->
+                <div class="dashboard-card">
+                    <div class="card-header">
+                        <h3>⚠️ Complaints & Issues</h3>
+                    </div>
+                    <div id="complaintsList">
+                        <!-- Dynamically populated -->
+                    </div>
+                </div>
+            </div>
+
+            <!-- Anti-Ghosting Alerts -->
+            <div class="dashboard-card" style="margin-top: var(--space-6);">
+                <div class="card-header">
+                    <h3>🛡️ Anti-Ghosting Alerts</h3>
+                    <span class="card-header-action">Today</span>
+                </div>
+                <div id="ghostingAlerts">
+                    <!-- Dynamically populated -->
+                </div>
+            </div>
+
+            <!-- Users Table -->
+            <div class="dashboard-card" style="margin-top: var(--space-6);">
+                <div class="card-header">
+                    <h3>👥 All Users</h3>
+                </div>
+                <div id="usersList" class="attendance-table">
+                    <!-- Dynamically populated -->
+                </div>
+            </div>
+
+            <!-- All Groups -->
+            <div class="dashboard-card" style="margin-top: var(--space-6);">
+                <div class="card-header">
+                    <h3>📚 Active Groups</h3>
+                </div>
+                <div id="adminGroupsList" class="attendance-table">
+                    <!-- Dynamically populated -->
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <!-- Toast Container -->
+    <div class="toast-container" id="toastContainer"></div>
+
+    <script src="js/store.js"></script>
+    <script src="js/dashboard.js"></script>
+    <script>
+        // Admin-specific extra features
+        document.addEventListener('DOMContentLoaded', () => {
+            const user = LinguaNest.getCurrentUser();
+            if (!user || user.role !== 'admin') return;
+
+            renderAdminGroups();
+            setupAdminNotifications();
+        });
+
+        // Reset all demo data
+        window.resetAllData = function () {
+            if (confirm('Reset all demo data? This will clear everything and seed fresh data.')) {
+                LinguaNest.resetData();
+                showToast('✅ Demo data reset!', 'success');
+                setTimeout(() => window.location.reload(), 800);
+            }
+        };
+
+        function renderAdminGroups() {
+            const container = document.getElementById('adminGroupsList');
+            if (!container) return;
+
+            const groups = LinguaNest.getGroups().filter(g => g.status === 'active');
+
+            container.innerHTML = `
+                <div class="attendance-table-header" style="grid-template-columns: 2fr 1fr 1fr 1fr 1fr;">
+                    <span>Group</span>
+                    <span>Volunteer</span>
+                    <span>Schedule</span>
+                    <span>Students</span>
+                    <span>Rating</span>
+                </div>
+                ${groups.map(g => {
+                const vol = LinguaNest.getUserById(g.volunteerId);
+                const students = LinguaNest.getStudentsInGroup(g.id);
+                return `
+                        <div class="attendance-row-data" style="grid-template-columns: 2fr 1fr 1fr 1fr 1fr;">
+                            <div class="student-cell">
+                                <span style="font-weight: 600;">${g.title}</span>
+                            </div>
+                            <span>${vol ? vol.firstName + ' ' + vol.lastName[0] + '.' : 'N/A'}</span>
+                            <span>${g.schedule.days.join(', ')} ${g.schedule.time}</span>
+                            <span>${students.length}/${g.maxStudents}</span>
+                            <span>⭐ ${g.rating > 0 ? g.rating.toFixed(1) : 'New'}</span>
+                        </div>
+                    `;
+            }).join('')}
+            `;
+        }
+
+        function setupAdminNotifications() {
+            const btn = document.getElementById('notifBtn');
+            if (!btn) return;
+            btn.addEventListener('click', () => {
+                const stats = LinguaNest.getStats();
+                showToast(`📊 ${stats.pendingApplications} pending apps, ${stats.openComplaints} open complaints`, 'info');
+                const dot = btn.querySelector('.notification-dot');
+                if (dot) dot.style.display = 'none';
+            });
+        }
+    </script>
+</body>
+
+</html>

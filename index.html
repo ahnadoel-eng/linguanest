@@ -1,0 +1,588 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description"
+        content="LinguaNest — free language tutoring platform. Volunteers earn certified hours for college apps. Students get free speaking practice. Join our global community.">
+    <meta name="keywords"
+        content="language volunteering, free tutoring, volunteer hours, Common App, speaking practice, language exchange">
+    <title>LinguaNest — Language Volunteering Platform</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Space+Grotesk:wght@400;500;600;700&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="css/global.css">
+    <link rel="stylesheet" href="css/landing.css">
+    <link rel="icon" type="image/svg+xml"
+        href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🌍</text></svg>">
+</head>
+
+<body>
+    <!-- Navigation -->
+    <nav class="navbar" id="navbar">
+        <div class="container nav-container">
+            <a href="index.html" class="nav-logo">
+                <div class="logo-icon">
+                    <svg width="32" height="32" viewBox="0 0 32 32" fill="none">
+                        <circle cx="16" cy="16" r="14" stroke="currentColor" stroke-width="2" />
+                        <path d="M8 16C8 16 12 8 16 8C20 8 24 16 24 16C24 16 20 24 16 24C12 24 8 16 8 16Z"
+                            fill="currentColor" opacity="0.2" />
+                        <path d="M16 2V30" stroke="currentColor" stroke-width="1.5" opacity="0.5" />
+                        <path d="M4 16H28" stroke="currentColor" stroke-width="1.5" opacity="0.5" />
+                        <circle cx="16" cy="16" r="6" stroke="currentColor" stroke-width="1.5" />
+                    </svg>
+                </div>
+                <span class="logo-text">Lingua<span class="logo-accent">Nest</span></span>
+            </a>
+            <div class="nav-links" id="navLinks">
+                <a href="#features" class="nav-link">Features</a>
+                <a href="#how-it-works" class="nav-link">How It Works</a>
+                <a href="#volunteers" class="nav-link">For Volunteers</a>
+                <a href="#students" class="nav-link">For Students</a>
+                <a href="#stats" class="nav-link">Impact</a>
+            </div>
+            <div class="nav-actions">
+                <a href="auth.html" class="btn btn-ghost" id="loginBtn">Log In</a>
+                <a href="auth.html#register" class="btn btn-primary" id="signupBtn">Get Started</a>
+            </div>
+            <button class="mobile-menu-btn" id="mobileMenuBtn" aria-label="Toggle menu">
+                <span></span>
+                <span></span>
+                <span></span>
+            </button>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="hero" id="hero">
+        <div class="hero-bg-effects">
+            <div class="hero-orb hero-orb-1"></div>
+            <div class="hero-orb hero-orb-2"></div>
+            <div class="hero-orb hero-orb-3"></div>
+            <div class="hero-grid"></div>
+        </div>
+        <div class="container hero-container">
+            <div class="hero-content">
+                <div class="hero-badge">
+                    <span class="badge-dot"></span>
+                    <span>Join 2,400+ volunteers worldwide</span>
+                </div>
+                <h1 class="hero-title">
+                    Teach Languages.<br>
+                    <span class="title-gradient">Earn Certified Hours.</span><br>
+                    Change Lives.
+                </h1>
+                <p class="hero-subtitle">
+                    LinguaNest connects high school & college students who want to teach languages for free
+                    with learners who need affordable speaking practice. Build your portfolio,
+                    get verified volunteer hours for Common App, and make a real impact.
+                </p>
+                <div class="hero-cta-group">
+                    <a href="auth.html#register" class="btn btn-primary btn-lg">
+                        <span>Start Volunteering</span>
+                        <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+                            <path d="M4 10H16M16 10L11 5M16 10L11 15" stroke="currentColor" stroke-width="2"
+                                stroke-linecap="round" stroke-linejoin="round" />
+                        </svg>
+                    </a>
+                    <a href="auth.html#register" class="btn btn-secondary btn-lg">
+                        <span>Find a Tutor</span>
+                    </a>
+                </div>
+                <div class="hero-trust">
+                    <div class="trust-avatars">
+                        <div class="trust-avatar" style="background: linear-gradient(135deg, #667eea, #764ba2);">A</div>
+                        <div class="trust-avatar" style="background: linear-gradient(135deg, #f093fb, #f5576c);">M</div>
+                        <div class="trust-avatar" style="background: linear-gradient(135deg, #4facfe, #00f2fe);">K</div>
+                        <div class="trust-avatar" style="background: linear-gradient(135deg, #43e97b, #38f9d7);">J</div>
+                        <div class="trust-avatar" style="background: linear-gradient(135deg, #fa709a, #fee140);">S</div>
+                    </div>
+                    <p class="trust-text"><strong>850+</strong> active tutoring sessions this month</p>
+                </div>
+            </div>
+            <div class="hero-visual">
+                <div class="hero-card-stack">
+                    <div class="hero-float-card card-1">
+                        <div class="float-card-icon">🎓</div>
+                        <div class="float-card-content">
+                            <span class="float-card-label">Volunteer Hours</span>
+                            <span class="float-card-value">127.5 hrs</span>
+                        </div>
+                    </div>
+                    <div class="hero-float-card card-2">
+                        <div class="float-card-icon">🌍</div>
+                        <div class="float-card-content">
+                            <span class="float-card-label">Languages Taught</span>
+                            <span class="float-card-value">12 Languages</span>
+                        </div>
+                    </div>
+                    <div class="hero-float-card card-3">
+                        <div class="float-card-icon">📜</div>
+                        <div class="float-card-content">
+                            <span class="float-card-label">Certificate Ready</span>
+                            <span class="float-card-value">Download PDF</span>
+                        </div>
+                    </div>
+                    <div class="hero-visual-main">
+                        <div class="visual-globe">
+                            <svg viewBox="0 0 200 200" class="globe-svg">
+                                <circle cx="100" cy="100" r="80" fill="none" stroke="rgba(255,255,255,0.1)"
+                                    stroke-width="1" />
+                                <circle cx="100" cy="100" r="60" fill="none" stroke="rgba(255,255,255,0.08)"
+                                    stroke-width="1" />
+                                <circle cx="100" cy="100" r="40" fill="none" stroke="rgba(255,255,255,0.06)"
+                                    stroke-width="1" />
+                                <ellipse cx="100" cy="100" rx="80" ry="30" fill="none" stroke="rgba(255,255,255,0.1)"
+                                    stroke-width="1" />
+                                <ellipse cx="100" cy="100" rx="30" ry="80" fill="none" stroke="rgba(255,255,255,0.1)"
+                                    stroke-width="1" />
+                                <!-- Connection dots -->
+                                <circle cx="60" cy="70" r="4" fill="#f9a825" class="pulse-dot" />
+                                <circle cx="130" cy="55" r="3" fill="#4fc3f7" class="pulse-dot"
+                                    style="animation-delay: 0.5s" />
+                                <circle cx="80" cy="130" r="3.5" fill="#81c784" class="pulse-dot"
+                                    style="animation-delay: 1s" />
+                                <circle cx="145" cy="110" r="3" fill="#f48fb1" class="pulse-dot"
+                                    style="animation-delay: 1.5s" />
+                                <circle cx="100" cy="40" r="3" fill="#ce93d8" class="pulse-dot"
+                                    style="animation-delay: 2s" />
+                                <!-- Connection lines -->
+                                <line x1="60" y1="70" x2="130" y2="55" stroke="rgba(249,168,37,0.3)" stroke-width="1"
+                                    class="connection-line" />
+                                <line x1="130" y1="55" x2="145" y2="110" stroke="rgba(79,195,247,0.3)" stroke-width="1"
+                                    class="connection-line" style="animation-delay: 0.3s" />
+                                <line x1="80" y1="130" x2="60" y2="70" stroke="rgba(129,199,132,0.3)" stroke-width="1"
+                                    class="connection-line" style="animation-delay: 0.6s" />
+                                <line x1="100" y1="40" x2="60" y2="70" stroke="rgba(206,147,216,0.3)" stroke-width="1"
+                                    class="connection-line" style="animation-delay: 0.9s" />
+                            </svg>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="hero-scroll-indicator">
+            <div class="scroll-line"></div>
+            <span>Scroll to explore</span>
+        </div>
+    </section>
+
+    <!-- Stats Bar -->
+    <section class="stats-bar" id="stats">
+        <div class="container">
+            <div class="stats-grid">
+                <div class="stat-item">
+                    <span class="stat-number" data-target="2400">0</span>
+                    <span class="stat-suffix">+</span>
+                    <span class="stat-label">Active Volunteers</span>
+                </div>
+                <div class="stat-divider"></div>
+                <div class="stat-item">
+                    <span class="stat-number" data-target="15000">0</span>
+                    <span class="stat-suffix">+</span>
+                    <span class="stat-label">Hours Taught</span>
+                </div>
+                <div class="stat-divider"></div>
+                <div class="stat-item">
+                    <span class="stat-number" data-target="42">0</span>
+                    <span class="stat-suffix"></span>
+                    <span class="stat-label">Countries</span>
+                </div>
+                <div class="stat-divider"></div>
+                <div class="stat-item">
+                    <span class="stat-number" data-target="12">0</span>
+                    <span class="stat-suffix"></span>
+                    <span class="stat-label">Languages</span>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- For Volunteers Section -->
+    <section class="section section-volunteers" id="volunteers">
+        <div class="container">
+            <div class="section-header">
+                <span class="section-tag">For Volunteers</span>
+                <h2 class="section-title">Build Your Future While <span class="text-gradient">Making an Impact</span>
+                </h2>
+                <p class="section-subtitle">Your teaching hours are tracked, verified, and certified — perfect for
+                    college applications, Common App, and your leadership portfolio.</p>
+            </div>
+            <div class="benefits-grid">
+                <div class="benefit-card benefit-card-featured">
+                    <div class="benefit-icon-wrap">
+                        <div class="benefit-icon">📜</div>
+                    </div>
+                    <h3>Certified Volunteer Hours</h3>
+                    <p>Every minute of your tutoring is automatically logged. Generate official PDF certificates with
+                        our organization's seal — ready for college admissions.</p>
+                    <div class="benefit-tag">Most Popular</div>
+                </div>
+                <div class="benefit-card">
+                    <div class="benefit-icon-wrap">
+                        <div class="benefit-icon">📊</div>
+                    </div>
+                    <h3>Detailed Analytics</h3>
+                    <p>Track your lifetime hours, students taught, attendance rates, and impact scores. Showcase your
+                        growth.</p>
+                </div>
+                <div class="benefit-card">
+                    <div class="benefit-icon-wrap">
+                        <div class="benefit-icon">🗓️</div>
+                    </div>
+                    <h3>Flexible Scheduling</h3>
+                    <p>Create lessons that fit your schedule. Set recurring or one-time sessions with Google Calendar
+                        integration.</p>
+                </div>
+                <div class="benefit-card">
+                    <div class="benefit-icon-wrap">
+                        <div class="benefit-icon">👥</div>
+                    </div>
+                    <h3>Group Management</h3>
+                    <p>Create and manage your own language groups. Set levels (A1–C1), track attendance, and build your
+                        teaching community.</p>
+                </div>
+                <div class="benefit-card">
+                    <div class="benefit-icon-wrap">
+                        <div class="benefit-icon">🏆</div>
+                    </div>
+                    <h3>Leadership Experience</h3>
+                    <p>Develop real teaching, communication, and organizational skills that colleges and employers
+                        value.</p>
+                </div>
+                <div class="benefit-card">
+                    <div class="benefit-icon-wrap">
+                        <div class="benefit-icon">🔔</div>
+                    </div>
+                    <h3>Smart Reminders</h3>
+                    <p>Never miss a lesson with automated check-in reminders 3 hours before class. Stay accountable.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- For Students Section -->
+    <section class="section section-students" id="students">
+        <div class="container">
+            <div class="section-header">
+                <span class="section-tag tag-yellow">For Students</span>
+                <h2 class="section-title">Practice Speaking <span class="text-gradient-warm">Without the Price
+                        Tag</span></h2>
+                <p class="section-subtitle">Find your perfect language group by level and language. Join free sessions
+                    led by passionate volunteer tutors.</p>
+            </div>
+            <div class="student-features">
+                <div class="feature-row">
+                    <div class="feature-visual">
+                        <div class="mock-search-ui">
+                            <div class="mock-search-bar">
+                                <svg width="18" height="18" viewBox="0 0 18 18" fill="none">
+                                    <circle cx="8" cy="8" r="6" stroke="currentColor" stroke-width="2" />
+                                    <line x1="13" y1="13" x2="16" y2="16" stroke="currentColor" stroke-width="2"
+                                        stroke-linecap="round" />
+                                </svg>
+                                <span>Search by language, level, time...</span>
+                            </div>
+                            <div class="mock-filters">
+                                <span class="mock-filter active">English</span>
+                                <span class="mock-filter">Spanish</span>
+                                <span class="mock-filter">French</span>
+                                <span class="mock-filter">Korean</span>
+                                <span class="mock-filter">Japanese</span>
+                            </div>
+                            <div class="mock-results">
+                                <div class="mock-result-card">
+                                    <div class="mock-avatar"
+                                        style="background: linear-gradient(135deg, #667eea, #764ba2);">AK</div>
+                                    <div class="mock-result-info">
+                                        <strong>English B2 – Speaking Club</strong>
+                                        <span>by Akos K. • Mon & Wed 18:00</span>
+                                    </div>
+                                    <span class="mock-spots">3 spots left</span>
+                                </div>
+                                <div class="mock-result-card">
+                                    <div class="mock-avatar"
+                                        style="background: linear-gradient(135deg, #f093fb, #f5576c);">LM</div>
+                                    <div class="mock-result-info">
+                                        <strong>Spanish A2 – Grammar & Chat</strong>
+                                        <span>by Lucia M. • Tue & Thu 16:00</span>
+                                    </div>
+                                    <span class="mock-spots">5 spots left</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="feature-content">
+                        <h3>Find Groups by Level & Language</h3>
+                        <p>Browse groups categorized by CEFR levels (A1 to C1) across 12+ languages. Filter by schedule,
+                            tutor rating, and available spots.</p>
+                        <ul class="feature-list">
+                            <li><span class="check-icon">✓</span> Smart search & filtering</li>
+                            <li><span class="check-icon">✓</span> CEFR-aligned levels</li>
+                            <li><span class="check-icon">✓</span> Real-time availability</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- How It Works -->
+    <section class="section section-how" id="how-it-works">
+        <div class="container">
+            <div class="section-header">
+                <span class="section-tag">How It Works</span>
+                <h2 class="section-title">Three Steps to <span class="text-gradient">Get Started</span></h2>
+            </div>
+            <div class="steps-grid">
+                <div class="step-card">
+                    <div class="step-number">01</div>
+                    <div class="step-icon">
+                        <svg width="40" height="40" viewBox="0 0 40 40" fill="none">
+                            <rect x="6" y="10" width="28" height="22" rx="3" stroke="currentColor" stroke-width="2" />
+                            <path d="M6 16H34" stroke="currentColor" stroke-width="2" />
+                            <circle cx="20" cy="8" r="6" stroke="currentColor" stroke-width="2" />
+                        </svg>
+                    </div>
+                    <h3>Create Your Account</h3>
+                    <p>Sign up and choose your role — Volunteer or Student. Complete your profile with languages and
+                        availability.</p>
+                </div>
+                <div class="step-connector">
+                    <svg width="60" height="20" viewBox="0 0 60 20">
+                        <path d="M0 10H50M50 10L42 4M50 10L42 16" stroke="currentColor" stroke-width="2"
+                            stroke-linecap="round" stroke-linejoin="round" opacity="0.3" />
+                    </svg>
+                </div>
+                <div class="step-card">
+                    <div class="step-number">02</div>
+                    <div class="step-icon">
+                        <svg width="40" height="40" viewBox="0 0 40 40" fill="none">
+                            <rect x="8" y="6" width="24" height="28" rx="3" stroke="currentColor" stroke-width="2" />
+                            <path d="M14 14H26M14 20H26M14 26H22" stroke="currentColor" stroke-width="2"
+                                stroke-linecap="round" />
+                        </svg>
+                    </div>
+                    <h3>Join or Create Groups</h3>
+                    <p>Volunteers create language groups with schedules. Students browse and enroll in groups matching
+                        their level.</p>
+                </div>
+                <div class="step-connector">
+                    <svg width="60" height="20" viewBox="0 0 60 20">
+                        <path d="M0 10H50M50 10L42 4M50 10L42 16" stroke="currentColor" stroke-width="2"
+                            stroke-linecap="round" stroke-linejoin="round" opacity="0.3" />
+                    </svg>
+                </div>
+                <div class="step-card">
+                    <div class="step-number">03</div>
+                    <div class="step-icon">
+                        <svg width="40" height="40" viewBox="0 0 40 40" fill="none">
+                            <circle cx="20" cy="20" r="14" stroke="currentColor" stroke-width="2" />
+                            <path d="M14 20L18 24L26 16" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"
+                                stroke-linejoin="round" />
+                        </svg>
+                    </div>
+                    <h3>Learn & Earn Hours</h3>
+                    <p>Attend sessions, check in, and grow together. Volunteers automatically earn verified hours toward
+                        their certificates.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Features Section -->
+    <section class="section section-features" id="features">
+        <div class="container">
+            <div class="section-header">
+                <span class="section-tag">Platform Features</span>
+                <h2 class="section-title">Built for <span class="text-gradient">Accountability</span></h2>
+                <p class="section-subtitle">No more ghosting, no more chaos. LinguaNest brings structure and
+                    responsibility to language volunteering.</p>
+            </div>
+            <div class="features-showcase">
+                <div class="feature-showcase-card">
+                    <div class="showcase-icon">🛡️</div>
+                    <h3>Anti-Ghosting System</h3>
+                    <p>Volunteers must check in 3 hours before each lesson. If they don't, the system alerts admins to
+                        find a replacement. No more last-minute cancellations.</p>
+                    <div class="showcase-visual">
+                        <div class="mock-checkin">
+                            <div class="checkin-header">
+                                <span class="checkin-dot green"></span>
+                                <span>Lesson Check-in Required</span>
+                            </div>
+                            <div class="checkin-body">
+                                <p>English B2 Speaking Club — Today at 18:00</p>
+                                <button class="mock-btn">✓ Confirm Attendance</button>
+                            </div>
+                            <div class="checkin-timer">2h 45m remaining</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="feature-showcase-card">
+                    <div class="showcase-icon">📋</div>
+                    <h3>Attendance Tracking</h3>
+                    <p>Automated student attendance monitoring. Two unexcused absences? The system auto-removes students
+                        from the group, keeping classes fair for everyone.</p>
+                    <div class="showcase-visual">
+                        <div class="mock-attendance">
+                            <div class="attendance-row">
+                                <span class="att-name">Maria S.</span>
+                                <span class="att-badge present">Present</span>
+                            </div>
+                            <div class="attendance-row">
+                                <span class="att-name">John D.</span>
+                                <span class="att-badge present">Present</span>
+                            </div>
+                            <div class="attendance-row warning-row">
+                                <span class="att-name">Alex K.</span>
+                                <span class="att-badge absent">Absent (2/2)</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="feature-showcase-card">
+                    <div class="showcase-icon">📄</div>
+                    <h3>PDF Certificates</h3>
+                    <p>Auto-generated, professionally designed PDF certificates with verified hours. Ready for Common
+                        App, university CVs, and scholarship applications.</p>
+                    <div class="showcase-visual">
+                        <div class="mock-certificate">
+                            <div class="cert-border">
+                                <div class="cert-header">Certificate of Volunteer Service</div>
+                                <div class="cert-name">Sarah Johnson</div>
+                                <div class="cert-hours">127.5 Volunteer Hours</div>
+                                <div class="cert-org">LinguaNest Language Volunteering Platform</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- CTA Section -->
+    <section class="section section-cta">
+        <div class="container">
+            <div class="cta-card">
+                <div class="cta-bg-effects">
+                    <div class="cta-orb cta-orb-1"></div>
+                    <div class="cta-orb cta-orb-2"></div>
+                </div>
+                <div class="cta-content">
+                    <h2>Ready to Make a Difference?</h2>
+                    <p>Join thousands of students worldwide who are building their future through language volunteering.
+                    </p>
+                    <div class="cta-buttons">
+                        <a href="auth.html#register" class="btn btn-white btn-lg">
+                            <span>Start Volunteering</span>
+                            <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+                                <path d="M4 10H16M16 10L11 5M16 10L11 15" stroke="currentColor" stroke-width="2"
+                                    stroke-linecap="round" stroke-linejoin="round" />
+                            </svg>
+                        </a>
+                        <a href="auth.html#register" class="btn btn-outline-white btn-lg">Find a Tutor</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-grid">
+                <div class="footer-brand">
+                    <a href="index.html" class="nav-logo">
+                        <div class="logo-icon">
+                            <svg width="28" height="28" viewBox="0 0 32 32" fill="none">
+                                <circle cx="16" cy="16" r="14" stroke="currentColor" stroke-width="2" />
+                                <circle cx="16" cy="16" r="6" stroke="currentColor" stroke-width="1.5" />
+                                <path d="M16 2V30" stroke="currentColor" stroke-width="1.5" opacity="0.5" />
+                            </svg>
+                        </div>
+                        <span class="logo-text">Lingua<span class="logo-accent">Nest</span></span>
+                    </a>
+                    <p>Empowering students to teach, learn, and grow through language volunteering.</p>
+                </div>
+                <div class="footer-links">
+                    <h4>Platform</h4>
+                    <a href="#features">Features</a>
+                    <a href="#how-it-works">How It Works</a>
+                    <a href="#volunteers">For Volunteers</a>
+                    <a href="#students">For Students</a>
+                </div>
+                <div class="footer-links">
+                    <h4>Support</h4>
+                    <a href="#">Help Center</a>
+                    <a href="#">Contact Us</a>
+                    <a href="#">FAQ</a>
+                    <a href="#">Report Issue</a>
+                </div>
+                <div class="footer-links">
+                    <h4>Legal</h4>
+                    <a href="#">Privacy Policy</a>
+                    <a href="#">Terms of Service</a>
+                    <a href="#">Cookie Policy</a>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2026 LinguaNest. All rights reserved.</p>
+                <div class="footer-social">
+                    <a href="#" aria-label="Twitter">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+                            <path
+                                d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z" />
+                        </svg>
+                    </a>
+                    <a href="#" aria-label="Instagram">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                            stroke-width="2">
+                            <rect x="2" y="2" width="20" height="20" rx="5" />
+                            <circle cx="12" cy="12" r="5" />
+                            <circle cx="17.5" cy="6.5" r="1.5" fill="currentColor" stroke="none" />
+                        </svg>
+                    </a>
+                    <a href="#" aria-label="Telegram">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+                            <path
+                                d="M11.944 0A12 12 0 0 0 0 12a12 12 0 0 0 12 12 12 12 0 0 0 12-12A12 12 0 0 0 12 0a12 12 0 0 0-.056 0zm4.962 7.224c.1-.002.321.023.465.14a.506.506 0 0 1 .171.325c.016.093.036.306.02.472-.18 1.898-.962 6.502-1.36 8.627-.168.9-.499 1.201-.82 1.23-.696.065-1.225-.46-1.9-.902-1.056-.693-1.653-1.124-2.678-1.8-1.185-.78-.417-1.21.258-1.91.177-.184 3.247-2.977 3.307-3.23.007-.032.014-.15-.056-.212s-.174-.041-.249-.024c-.106.024-1.793 1.14-5.061 3.345-.48.33-.913.49-1.302.48-.428-.008-1.252-.241-1.865-.44-.752-.245-1.349-.374-1.297-.789.027-.216.325-.437.893-.663 3.498-1.524 5.83-2.529 6.998-3.014 3.332-1.386 4.025-1.627 4.476-1.635z" />
+                        </svg>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <script src="js/store.js"></script>
+    <script src="js/landing.js"></script>
+    <script>
+        // Update nav if user is logged in
+        document.addEventListener('DOMContentLoaded', () => {
+            const user = LinguaNest.getCurrentUser();
+            if (user) {
+                const loginBtn = document.getElementById('loginBtn');
+                const signupBtn = document.getElementById('signupBtn');
+                if (loginBtn) {
+                    loginBtn.textContent = 'Dashboard';
+                    loginBtn.href = user.role === 'volunteer' ? 'dashboard-volunteer.html' :
+                        user.role === 'admin' ? 'admin.html' : 'dashboard-student.html';
+                }
+                if (signupBtn) {
+                    signupBtn.textContent = 'Log Out';
+                    signupBtn.href = '#';
+                    signupBtn.addEventListener('click', (e) => {
+                        e.preventDefault();
+                        LinguaNest.logout();
+                        window.location.reload();
+                    });
+                }
+            }
+        });
+    </script>
+</body>
+
+</html>

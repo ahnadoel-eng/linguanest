@@ -1,0 +1,315 @@
+/* =========================================
+   LinguaNest — Auth Page Styles
+   ========================================= */
+
+.auth-page {
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    overflow: hidden;
+    padding: var(--space-8) var(--space-4);
+}
+
+.auth-bg-effects {
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+}
+
+.auth-orb {
+    position: absolute;
+    border-radius: 50%;
+    filter: blur(100px);
+    opacity: 0.3;
+}
+
+.auth-orb-1 {
+    width: 600px;
+    height: 600px;
+    background: radial-gradient(circle, var(--blue-800), transparent);
+    top: -200px;
+    right: -200px;
+}
+
+.auth-orb-2 {
+    width: 400px;
+    height: 400px;
+    background: radial-gradient(circle, rgba(249, 168, 37, 0.15), transparent);
+    bottom: -100px;
+    left: -100px;
+}
+
+.auth-container {
+    width: 100%;
+    max-width: 460px;
+    position: relative;
+    z-index: 2;
+    animation: fadeInUp 0.6s ease-out;
+}
+
+.auth-card {
+    background: rgba(255, 255, 255, 0.04);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: var(--radius-2xl);
+    padding: var(--space-10);
+    backdrop-filter: blur(20px);
+}
+
+.auth-header {
+    text-align: center;
+    margin-bottom: var(--space-8);
+}
+
+.auth-logo {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: var(--space-3);
+    margin-bottom: var(--space-8);
+}
+
+.auth-header h1 {
+    font-family: var(--font-display);
+    font-size: 1.6rem;
+    font-weight: 700;
+    margin-bottom: var(--space-2);
+}
+
+.auth-header p {
+    color: var(--text-secondary);
+    font-size: 0.9rem;
+}
+
+/* Role Selection */
+.role-selection {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: var(--space-3);
+    margin-bottom: var(--space-6);
+}
+
+.role-option {
+    position: relative;
+}
+
+.role-option input {
+    position: absolute;
+    opacity: 0;
+    width: 0;
+    height: 0;
+}
+
+.role-label {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: var(--space-2);
+    padding: var(--space-5) var(--space-4);
+    background: rgba(255, 255, 255, 0.03);
+    border: 2px solid rgba(255, 255, 255, 0.08);
+    border-radius: var(--radius-lg);
+    cursor: pointer;
+    transition: all var(--transition-base);
+    text-align: center;
+}
+
+.role-label:hover {
+    background: rgba(255, 255, 255, 0.06);
+    border-color: rgba(255, 255, 255, 0.15);
+}
+
+.role-option input:checked+.role-label {
+    border-color: var(--blue-500);
+    background: rgba(63, 81, 181, 0.1);
+    box-shadow: 0 0 0 1px var(--blue-500);
+}
+
+.role-emoji {
+    font-size: 2rem;
+}
+
+.role-name {
+    font-weight: 600;
+    font-size: 0.92rem;
+}
+
+.role-desc {
+    font-size: 0.75rem;
+    color: var(--text-tertiary);
+}
+
+/* Auth Form */
+.auth-form {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-4);
+}
+
+.auth-form .form-input {
+    padding: var(--space-4);
+}
+
+.form-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: var(--space-3);
+}
+
+.auth-submit {
+    width: 100%;
+    padding: var(--space-4);
+    margin-top: var(--space-2);
+    font-weight: 700;
+    font-size: 1rem;
+}
+
+.auth-divider {
+    display: flex;
+    align-items: center;
+    gap: var(--space-4);
+    margin: var(--space-6) 0;
+    color: var(--text-tertiary);
+    font-size: 0.82rem;
+}
+
+.auth-divider::before,
+.auth-divider::after {
+    content: '';
+    flex: 1;
+    height: 1px;
+    background: rgba(255, 255, 255, 0.1);
+}
+
+.auth-switch {
+    text-align: center;
+    font-size: 0.88rem;
+    color: var(--text-secondary);
+}
+
+.auth-switch a {
+    color: var(--blue-300);
+    font-weight: 600;
+}
+
+.auth-switch a:hover {
+    color: var(--blue-200);
+    text-decoration: underline;
+}
+
+/* Social login buttons */
+.social-btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: var(--space-3);
+    width: 100%;
+    padding: var(--space-3);
+    background: rgba(255, 255, 255, 0.04);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: var(--radius-md);
+    font-size: 0.88rem;
+    font-weight: 500;
+    color: var(--text-secondary);
+    transition: all var(--transition-fast);
+}
+
+.social-btn:hover {
+    background: rgba(255, 255, 255, 0.08);
+    border-color: rgba(255, 255, 255, 0.2);
+    color: var(--text-primary);
+}
+
+.back-to-home {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: var(--space-2);
+    margin-top: var(--space-6);
+    color: var(--text-tertiary);
+    font-size: 0.85rem;
+    transition: color var(--transition-fast);
+}
+
+.back-to-home:hover {
+    color: var(--text-secondary);
+}
+
+/* Password strength */
+.password-strength {
+    display: flex;
+    gap: var(--space-1);
+    margin-top: var(--space-2);
+}
+
+.strength-bar {
+    flex: 1;
+    height: 3px;
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 2px;
+    transition: background var(--transition-fast);
+}
+
+.strength-bar.active.weak {
+    background: var(--error);
+}
+
+.strength-bar.active.medium {
+    background: var(--warning);
+}
+
+.strength-bar.active.strong {
+    background: var(--success);
+}
+
+/* Error states */
+.form-error {
+    color: var(--error);
+    font-size: 0.78rem;
+    margin-top: var(--space-1);
+    display: none;
+}
+
+.form-input.error {
+    border-color: var(--error);
+    box-shadow: 0 0 0 3px rgba(239, 68, 68, 0.15);
+}
+
+/* Success animation */
+.auth-success {
+    text-align: center;
+    padding: var(--space-10);
+    display: none;
+}
+
+.auth-success.show {
+    display: block;
+    animation: fadeInUp 0.4s ease-out;
+}
+
+.success-icon {
+    font-size: 4rem;
+    margin-bottom: var(--space-4);
+}
+
+.auth-success h2 {
+    font-family: var(--font-display);
+    font-size: 1.4rem;
+    margin-bottom: var(--space-3);
+}
+
+.auth-success p {
+    color: var(--text-secondary);
+    margin-bottom: var(--space-6);
+}
+
+@media (max-width: 480px) {
+    .auth-card {
+        padding: var(--space-6);
+    }
+
+    .form-row {
+        grid-template-columns: 1fr;
+    }
+}

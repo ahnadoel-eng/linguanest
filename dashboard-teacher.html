@@ -1,0 +1,273 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="LinguaNest Teacher Dashboard — Manage lessons, students, and start video calls.">
+    <title>LinguaNest — Teacher Dashboard</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Space+Grotesk:wght@400;500;600;700&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="css/global.css">
+    <link rel="stylesheet" href="css/dashboard.css">
+    <link rel="icon" type="image/svg+xml"
+        href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🌍</text></svg>">
+</head>
+
+<body>
+    <div class="dashboard-layout">
+        <!-- Sidebar -->
+        <aside class="sidebar" id="sidebar">
+            <div class="sidebar-header">
+                <div class="logo-icon">
+                    <svg width="28" height="28" viewBox="0 0 32 32" fill="none">
+                        <circle cx="16" cy="16" r="14" stroke="var(--blue-300)" stroke-width="2" />
+                        <circle cx="16" cy="16" r="6" stroke="var(--blue-300)" stroke-width="1.5" />
+                        <path d="M16 2V30" stroke="var(--blue-300)" stroke-width="1.5" opacity="0.5" />
+                    </svg>
+                </div>
+                <span class="logo-text">Lingua<span class="logo-accent">Nest</span></span>
+            </div>
+
+            <nav class="sidebar-nav">
+                <span class="sidebar-section-title">Main</span>
+                <a href="#" class="sidebar-link active" data-section="overview">
+                    <span class="link-icon">📊</span>
+                    <span>Overview</span>
+                </a>
+                <a href="#" class="sidebar-link" data-section="lessons">
+                    <span class="link-icon">📅</span>
+                    <span>My Lessons</span>
+                </a>
+                <a href="#" class="sidebar-link" data-section="students">
+                    <span class="link-icon">👥</span>
+                    <span>My Students</span>
+                </a>
+
+                <span class="sidebar-section-title">Actions</span>
+                <a href="#" class="sidebar-link" data-section="create">
+                    <span class="link-icon">➕</span>
+                    <span>Create Lesson</span>
+                </a>
+                <a href="#" class="sidebar-link" data-section="calendar">
+                    <span class="link-icon">🗓️</span>
+                    <span>Calendar</span>
+                </a>
+
+                <span class="sidebar-section-title">Settings</span>
+                <a href="#" class="sidebar-link" data-section="profile">
+                    <span class="link-icon">⚙️</span>
+                    <span>Profile</span>
+                </a>
+            </nav>
+
+            <div class="sidebar-footer">
+                <div class="sidebar-user" id="sidebarUser">
+                    <div class="user-avatar" style="background: linear-gradient(135deg, #667eea, #764ba2);">TT</div>
+                    <div class="user-info">
+                        <div class="user-name">Teacher</div>
+                        <div class="user-role">Teacher</div>
+                    </div>
+                </div>
+                <a href="#" class="sidebar-link logout-link" style="margin-top: var(--space-3);">
+                    <span class="link-icon">🚪</span>
+                    <span>Log Out</span>
+                </a>
+            </div>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="dashboard-main">
+            <button class="sidebar-toggle" id="sidebarToggle">☰</button>
+
+            <!-- Top Bar -->
+            <div class="dashboard-topbar">
+                <div class="topbar-left">
+                    <h1 id="greeting">Good afternoon! 👋</h1>
+                    <p>Manage your lessons and students</p>
+                </div>
+                <div class="topbar-right">
+                    <button class="topbar-btn" id="notifBtn" title="Notifications">
+                        🔔
+                        <span class="notification-dot"></span>
+                    </button>
+                    <a href="#" class="btn btn-primary" id="createLessonBtn">
+                        + Create Lesson
+                    </a>
+                </div>
+            </div>
+
+            <!-- Stats Cards — Loaded from API -->
+            <div class="stats-cards" id="statsCards">
+                <div class="stat-card skeleton-card">
+                    <div class="skeleton-line" style="width: 40%; height: 20px;"></div>
+                    <div class="skeleton-line" style="width: 60%; height: 32px; margin-top: 12px;"></div>
+                    <div class="skeleton-line" style="width: 80%; height: 14px; margin-top: 8px;"></div>
+                </div>
+                <div class="stat-card skeleton-card">
+                    <div class="skeleton-line" style="width: 40%; height: 20px;"></div>
+                    <div class="skeleton-line" style="width: 60%; height: 32px; margin-top: 12px;"></div>
+                    <div class="skeleton-line" style="width: 80%; height: 14px; margin-top: 8px;"></div>
+                </div>
+                <div class="stat-card skeleton-card">
+                    <div class="skeleton-line" style="width: 40%; height: 20px;"></div>
+                    <div class="skeleton-line" style="width: 60%; height: 32px; margin-top: 12px;"></div>
+                    <div class="skeleton-line" style="width: 80%; height: 14px; margin-top: 8px;"></div>
+                </div>
+                <div class="stat-card skeleton-card">
+                    <div class="skeleton-line" style="width: 40%; height: 20px;"></div>
+                    <div class="skeleton-line" style="width: 60%; height: 32px; margin-top: 12px;"></div>
+                    <div class="skeleton-line" style="width: 80%; height: 14px; margin-top: 8px;"></div>
+                </div>
+            </div>
+
+            <!-- Dashboard Grid -->
+            <div class="dashboard-grid">
+                <!-- Upcoming Lessons -->
+                <div class="dashboard-card">
+                    <div class="card-header">
+                        <h3>📅 Upcoming Lessons</h3>
+                        <span class="card-header-action" id="viewAllLessons">View All →</span>
+                    </div>
+                    <div class="lessons-list" id="lessonsList">
+                        <!-- Empty State — loaded from API -->
+                        <div class="empty-state" id="lessonsEmptyState">
+                            <div class="empty-state-icon">📅</div>
+                            <h3>No upcoming lessons</h3>
+                            <p>Create your first lesson to get started!</p>
+                            <button class="btn btn-primary"
+                                onclick="document.getElementById('createLessonBtn').click()">+ Create Lesson</button>
+                        </div>
+                        <div class="loading-spinner" id="lessonsSpinner">
+                            <div class="spinner"></div>
+                            <p>Loading lessons...</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Quick Actions -->
+                <div class="dashboard-card">
+                    <div class="card-header">
+                        <h3>⚡ Quick Actions</h3>
+                    </div>
+                    <div class="quick-actions">
+                        <button class="quick-action-btn" id="createLessonAction">
+                            <span class="action-icon">➕</span>
+                            <div class="action-text">
+                                <strong>Create New Lesson</strong>
+                                <span>Schedule a tutoring session</span>
+                            </div>
+                            <span class="action-arrow">→</span>
+                        </button>
+                        <button class="quick-action-btn" id="viewStudentsAction">
+                            <span class="action-icon">👥</span>
+                            <div class="action-text">
+                                <strong>View Students</strong>
+                                <span>See your enrolled students</span>
+                            </div>
+                            <span class="action-arrow">→</span>
+                        </button>
+                        <button class="quick-action-btn" id="startCallAction">
+                            <span class="action-icon">📹</span>
+                            <div class="action-text">
+                                <strong>Start Video Call</strong>
+                                <span>Launch your next lesson</span>
+                            </div>
+                            <span class="action-arrow">→</span>
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- My Students -->
+            <div class="dashboard-card" style="margin-top: var(--space-6);">
+                <div class="card-header">
+                    <h3>👥 My Students</h3>
+                </div>
+                <div id="studentsList" class="attendance-table">
+                    <!-- Empty state — loaded from API -->
+                    <div class="empty-state" id="studentsEmptyState">
+                        <div class="empty-state-icon">👥</div>
+                        <h3>No students yet</h3>
+                        <p>Students will appear here once they're assigned to your lessons.</p>
+                    </div>
+                    <div class="loading-spinner" id="studentsSpinner">
+                        <div class="spinner"></div>
+                        <p>Loading students...</p>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <!-- Create Lesson Modal -->
+    <div class="modal-overlay" id="createLessonModal">
+        <div class="modal">
+            <div class="modal-header">
+                <h2>Create New Lesson</h2>
+                <button class="modal-close" onclick="closeModal('createLessonModal')">✕</button>
+            </div>
+            <form id="createLessonForm">
+                <div class="form-group">
+                    <label class="form-label">Lesson Title</label>
+                    <input type="text" class="form-input" id="lessonTitle"
+                        placeholder="e.g. English B2 — Speaking Practice" required>
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Description (optional)</label>
+                    <input type="text" class="form-input" id="lessonDescription"
+                        placeholder="Brief description of the lesson">
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Student (optional)</label>
+                    <select class="form-select" id="lessonStudent">
+                        <option value="">Select a student...</option>
+                        <!-- Populated from API -->
+                    </select>
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label class="form-label">Date</label>
+                        <input type="date" class="form-input" id="lessonDate" required>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Time</label>
+                        <input type="time" class="form-input" id="lessonTime" value="18:00" required>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Duration (minutes)</label>
+                    <select class="form-select" id="lessonDuration">
+                        <option value="30">30 min</option>
+                        <option value="45">45 min</option>
+                        <option value="60" selected>60 min</option>
+                        <option value="90">90 min</option>
+                    </select>
+                </div>
+                <button type="submit" class="btn btn-primary auth-submit">Create Lesson</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Jitsi Video Call Modal -->
+    <div class="modal-overlay" id="videoCallModal">
+        <div class="modal" style="max-width: 900px; width: 95%; padding: 0; overflow: hidden;">
+            <div class="modal-header" style="padding: 16px 20px; border-bottom: 1px solid rgba(255,255,255,0.1);">
+                <h2 id="videoCallTitle">Video Call</h2>
+                <button class="modal-close" onclick="endVideoCall()">✕ End Call</button>
+            </div>
+            <div id="jitsiContainer" style="width: 100%; height: 500px; background: #000;"></div>
+        </div>
+    </div>
+
+    <!-- Toast Container -->
+    <div class="toast-container" id="toastContainer"></div>
+
+    <script src="js/api.js"></script>
+    <script src="js/dashboard-teacher.js"></script>
+</body>
+
+</html>

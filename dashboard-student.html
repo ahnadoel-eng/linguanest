@@ -1,0 +1,235 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description"
+        content="LinguaNest Student Dashboard — Track your lessons, join video calls, and monitor your learning progress.">
+    <title>LinguaNest — Student Dashboard</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Space+Grotesk:wght@400;500;600;700&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="css/global.css">
+    <link rel="stylesheet" href="css/dashboard.css">
+    <link rel="icon" type="image/svg+xml"
+        href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🌍</text></svg>">
+</head>
+
+<body>
+    <div class="dashboard-layout">
+        <!-- Sidebar -->
+        <aside class="sidebar" id="sidebar">
+            <div class="sidebar-header">
+                <div class="logo-icon">
+                    <svg width="28" height="28" viewBox="0 0 32 32" fill="none">
+                        <circle cx="16" cy="16" r="14" stroke="var(--blue-300)" stroke-width="2" />
+                        <circle cx="16" cy="16" r="6" stroke="var(--blue-300)" stroke-width="1.5" />
+                        <path d="M16 2V30" stroke="var(--blue-300)" stroke-width="1.5" opacity="0.5" />
+                    </svg>
+                </div>
+                <span class="logo-text">Lingua<span class="logo-accent">Nest</span></span>
+            </div>
+
+            <nav class="sidebar-nav">
+                <span class="sidebar-section-title">Main</span>
+                <a href="#" class="sidebar-link active" data-section="overview">
+                    <span class="link-icon">📊</span>
+                    <span>Overview</span>
+                </a>
+                <a href="#" class="sidebar-link" data-section="lessons">
+                    <span class="link-icon">📅</span>
+                    <span>My Lessons</span>
+                </a>
+                <a href="#" class="sidebar-link" data-section="progress">
+                    <span class="link-icon">📈</span>
+                    <span>Learning Progress</span>
+                </a>
+
+                <span class="sidebar-section-title">Explore</span>
+                <a href="#" class="sidebar-link" data-section="teachers">
+                    <span class="link-icon">🎓</span>
+                    <span>My Teachers</span>
+                </a>
+                <a href="#" class="sidebar-link" data-section="calendar">
+                    <span class="link-icon">🗓️</span>
+                    <span>Calendar</span>
+                </a>
+
+                <span class="sidebar-section-title">Settings</span>
+                <a href="#" class="sidebar-link" data-section="profile">
+                    <span class="link-icon">⚙️</span>
+                    <span>Profile</span>
+                </a>
+            </nav>
+
+            <div class="sidebar-footer">
+                <div class="sidebar-user" id="sidebarUser">
+                    <div class="user-avatar" style="background: linear-gradient(135deg, #43e97b, #38f9d7);">SS</div>
+                    <div class="user-info">
+                        <div class="user-name">Student</div>
+                        <div class="user-role">Student</div>
+                    </div>
+                </div>
+                <a href="#" class="sidebar-link logout-link" style="margin-top: var(--space-3);">
+                    <span class="link-icon">🚪</span>
+                    <span>Log Out</span>
+                </a>
+            </div>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="dashboard-main">
+            <button class="sidebar-toggle" id="sidebarToggle">☰</button>
+
+            <!-- Top Bar -->
+            <div class="dashboard-topbar">
+                <div class="topbar-left">
+                    <h1 id="greeting">Good afternoon! 👋</h1>
+                    <p>Track your lessons and learning progress</p>
+                </div>
+                <div class="topbar-right">
+                    <button class="topbar-btn" id="notifBtn" title="Notifications">
+                        🔔
+                    </button>
+                </div>
+            </div>
+
+            <!-- Stats Cards — Loaded from API -->
+            <div class="stats-cards" id="statsCards">
+                <div class="stat-card skeleton-card">
+                    <div class="skeleton-line" style="width: 40%; height: 20px;"></div>
+                    <div class="skeleton-line" style="width: 60%; height: 32px; margin-top: 12px;"></div>
+                    <div class="skeleton-line" style="width: 80%; height: 14px; margin-top: 8px;"></div>
+                </div>
+                <div class="stat-card skeleton-card">
+                    <div class="skeleton-line" style="width: 40%; height: 20px;"></div>
+                    <div class="skeleton-line" style="width: 60%; height: 32px; margin-top: 12px;"></div>
+                    <div class="skeleton-line" style="width: 80%; height: 14px; margin-top: 8px;"></div>
+                </div>
+                <div class="stat-card skeleton-card">
+                    <div class="skeleton-line" style="width: 40%; height: 20px;"></div>
+                    <div class="skeleton-line" style="width: 60%; height: 32px; margin-top: 12px;"></div>
+                    <div class="skeleton-line" style="width: 80%; height: 14px; margin-top: 8px;"></div>
+                </div>
+                <div class="stat-card skeleton-card">
+                    <div class="skeleton-line" style="width: 40%; height: 20px;"></div>
+                    <div class="skeleton-line" style="width: 60%; height: 32px; margin-top: 12px;"></div>
+                    <div class="skeleton-line" style="width: 80%; height: 14px; margin-top: 8px;"></div>
+                </div>
+            </div>
+
+            <!-- Dashboard Grid -->
+            <div class="dashboard-grid">
+                <!-- My Lessons (instead of "Create Lesson") -->
+                <div class="dashboard-card">
+                    <div class="card-header">
+                        <h3>📅 My Upcoming Lessons</h3>
+                        <span class="card-header-action" id="viewAllLessons">View All →</span>
+                    </div>
+                    <div class="lessons-list" id="lessonsList">
+                        <div class="empty-state" id="lessonsEmptyState" style="display: none;">
+                            <div class="empty-state-icon">📅</div>
+                            <h3>No upcoming lessons</h3>
+                            <p>Your teacher will schedule lessons for you. Check back soon!</p>
+                        </div>
+                        <div class="loading-spinner" id="lessonsSpinner">
+                            <div class="spinner"></div>
+                            <p>Loading lessons...</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Quick Actions (Student version — no "Create Lesson") -->
+                <div class="dashboard-card">
+                    <div class="card-header">
+                        <h3>⚡ Quick Actions</h3>
+                    </div>
+                    <div class="quick-actions">
+                        <button class="quick-action-btn" id="joinNextCall">
+                            <span class="action-icon">📹</span>
+                            <div class="action-text">
+                                <strong>Join Next Call</strong>
+                                <span>Connect to your upcoming lesson</span>
+                            </div>
+                            <span class="action-arrow">→</span>
+                        </button>
+                        <button class="quick-action-btn" id="viewProgressAction">
+                            <span class="action-icon">📈</span>
+                            <div class="action-text">
+                                <strong>Learning Progress</strong>
+                                <span>See how far you've come</span>
+                            </div>
+                            <span class="action-arrow">→</span>
+                        </button>
+                        <button class="quick-action-btn" id="viewTeachersAction">
+                            <span class="action-icon">🎓</span>
+                            <div class="action-text">
+                                <strong>My Teachers</strong>
+                                <span>View your assigned teachers</span>
+                            </div>
+                            <span class="action-arrow">→</span>
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Learning Progress Section (Student-specific) -->
+            <div class="dashboard-card" style="margin-top: var(--space-6);">
+                <div class="card-header">
+                    <h3>📈 Learning Progress</h3>
+                </div>
+                <div id="progressSection">
+                    <div class="empty-state" id="progressEmptyState" style="display: none;">
+                        <div class="empty-state-icon">📈</div>
+                        <h3>No progress data yet</h3>
+                        <p>Complete your first lesson to start tracking your progress!</p>
+                    </div>
+                    <div class="loading-spinner" id="progressSpinner">
+                        <div class="spinner"></div>
+                        <p>Loading progress...</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Completed Lessons (My Records) -->
+            <div class="dashboard-card" style="margin-top: var(--space-6);">
+                <div class="card-header">
+                    <h3>📝 My Records (Completed Lessons)</h3>
+                </div>
+                <div id="completedLessonsList">
+                    <div class="empty-state" id="completedEmptyState" style="display: none;">
+                        <div class="empty-state-icon">📝</div>
+                        <h3>No completed lessons yet</h3>
+                        <p>Your completed lesson records will appear here.</p>
+                    </div>
+                    <div class="loading-spinner" id="completedSpinner">
+                        <div class="spinner"></div>
+                        <p>Loading records...</p>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <!-- Jitsi Video Call Modal -->
+    <div class="modal-overlay" id="videoCallModal">
+        <div class="modal" style="max-width: 900px; width: 95%; padding: 0; overflow: hidden;">
+            <div class="modal-header" style="padding: 16px 20px; border-bottom: 1px solid rgba(255,255,255,0.1);">
+                <h2 id="videoCallTitle">Video Call</h2>
+                <button class="modal-close" onclick="endVideoCall()">✕ End Call</button>
+            </div>
+            <div id="jitsiContainer" style="width: 100%; height: 500px; background: #000;"></div>
+        </div>
+    </div>
+
+    <!-- Toast Container -->
+    <div class="toast-container" id="toastContainer"></div>
+
+    <script src="js/api.js"></script>
+    <script src="js/dashboard-student.js"></script>
+</body>
+
+</html>
