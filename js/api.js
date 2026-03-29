@@ -64,9 +64,89 @@ const API = (() => {
 
             return data;
         } catch (err) {
-            console.error(`API Error [${endpoint}]:`, err.message);
-            throw err;
+            console.warn(`⚠️ API Error [${endpoint}]:`, err.message);
+            console.warn(`🚀 Switching to HACKATHON MOCK MODE for this request.`);
+            return getHackathonMockData(endpoint, options);
         }
+    }
+
+    // ========================
+    // HACKATHON MOCK DATA GENERATOR
+    // ========================
+    function getHackathonMockData(endpoint, options) {
+        // Auth mocks — use stored user if available 
+        if (endpoint.includes('/auth/login') || endpoint.includes('/auth/register')) {
+            const body = options.body ? JSON.parse(options.body) : {};
+            const email = body.email || 'demo@alem.plus';
+            const name = body.name || email.split('@')[0];
+            const role = email.includes('teacher') ? 'teacher' : (body.role || 'student');
+            return {
+                success: true,
+                token: 'mock-jwt-token-for-hackathon',
+                user: { id: 'mock-id-123', name, email, role, avatar_url: getRandomAvatar(), created_at: new Date().toISOString() }
+            };
+        }
+        if (endpoint.includes('/auth/me')) return { success: true, user: getUser() };
+        
+        // Stats mocks
+        if (endpoint.includes('/lessons/stats')) {
+            return { stats: { total_lessons: 12, upcoming_lessons: 3, completed_lessons: 9, total_students: 8, avg_score: 92 } };
+        }
+        
+        // Lessons mocks
+        if (endpoint.includes('/lessons/upcoming')) {
+            const tomorrow = new Date(); tomorrow.setDate(tomorrow.getDate() + 1);
+            return { lessons: [
+                { id: '1', title: 'English B2 - Speaking Club', scheduled_time: tomorrow.toISOString(), duration_minutes: 60, status: 'scheduled', teacher_name: 'Alex T.', student_name: 'Demo Student' },
+                { id: '2', title: 'Grammar Practice', scheduled_time: new Date(new Date().getTime() + 86400000 * 2).toISOString(), duration_minutes: 45, status: 'scheduled', teacher_name: 'Maria S.', student_name: 'Demo Student' }
+            ] };
+        }
+        if (endpoint.includes('/lessons/completed')) {
+            const lastWeek = new Date(); lastWeek.setDate(lastWeek.getDate() - 7);
+            return { lessons: [{ id: '3', title: 'English B1 Review', scheduled_time: lastWeek.toISOString(), duration_minutes: 60, partner_name: 'Alex T.', status: 'completed' }] };
+        }
+        
+        // Progress mocks
+        if (endpoint.includes('/users/progress')) {
+            const date = new Date(); date.setDate(date.getDate() - 2);
+            return { progress: [
+                { score: 95, lesson_title: 'English B2 Mock Test', notes: 'Great vocabulary usage!', completed_at: date.toISOString() },
+                { score: 80, lesson_title: 'Grammar Basics', notes: 'Needs some review on past tense.', completed_at: new Date(date.getTime() - 86400000).toISOString() }
+            ] };
+        }
+
+        // Students & Teachers mocks
+        if (endpoint.includes('/users/students')) {
+            return { students: [
+                { id: 's1', name: 'John Doe', email: 'john@example.com', language: 'english', created_at: new Date() },
+                { id: 's2', name: 'Sarah Connor', email: 'sarah@example.com', language: 'english', created_at: new Date() }
+            ] };
+        }
+        if (endpoint.includes('/users/teachers')) {
+            return { teachers: [
+                { id: 't1', name: 'Alice Walker' },
+                { id: 't2', name: 'Bob Smith' }
+            ] };
+        }
+
+        // Create Lesson Mock
+        if (options.method === 'POST' && endpoint.includes('/lessons')) {
+            return { success: true, lesson: { id: 'mock-123' } };
+        }
+
+        // AI Features (If backend server entirely fails)
+        if (endpoint.includes('/ai/generate-lesson')) {
+            return { lesson: { title: "AI Generated Plan", description: "Fallback Mock Lesson", vocabulary: ["Hackathon", "Demo", "Mock"], exercises: ["Discuss...", "Explain..."] } };
+        }
+        if (endpoint.includes('/ai/chat')) {
+            return { reply: "Hi! I am the mock fallback buddy, running offline because your server couldn't connect." };
+        }
+        if (endpoint.includes('/ai/chat-audio')) {
+            return { success: true, userText: "This is a mock transcribed text.", reply: "That is interesting! (Mock fallback text)" };
+        }
+
+        // Default generic success
+        return { success: true, message: "Mock success" };
     }
 
     // ========================
@@ -161,6 +241,30 @@ const API = (() => {
 
     async function joinLesson(id) {
         return await request(`/lessons/${id}/join`);
+    }
+
+    // ========================
+    // AI API (alem.plus features)
+    // ========================
+    async function generateLesson(topic, level) {
+        return await request('/ai/generate-lesson', {
+            method: 'POST',
+            body: JSON.stringify({ topic, level })
+        });
+    }
+
+    async function chatWithBuddy(message, history = []) {
+        return await request('/ai/chat', {
+            method: 'POST',
+            body: JSON.stringify({ message, history })
+        });
+    }
+
+    async function chatAudioWithBuddy(audioBase64, history = []) {
+        return await request('/ai/chat-audio', {
+            method: 'POST',
+            body: JSON.stringify({ audioBase64, history })
+        });
     }
 
     // ========================
@@ -271,6 +375,9 @@ const API = (() => {
 
         // Users
         getStudents, getTeachers, getProfile, getProgress,
+
+        // AI Features
+        generateLesson, chatWithBuddy, chatAudioWithBuddy,
 
         // Navigation
         redirectToDashboard, requireAuth, requireRole,

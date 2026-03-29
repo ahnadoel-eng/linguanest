@@ -22,6 +22,7 @@ document.addEventListener('DOMContentLoaded', () => {
     loadUpcomingLessons();
     loadProgress();
     loadCompletedLessons();
+    setupAIBuddy();
 
     // ========================
     // SIDEBAR
@@ -38,6 +39,67 @@ document.addEventListener('DOMContentLoaded', () => {
                 }
             });
         }
+
+        // Sidebar navigation — show/hide sections
+        document.querySelectorAll('.sidebar-link[data-section]').forEach(link => {
+            link.addEventListener('click', (e) => {
+                e.preventDefault();
+                const section = link.dataset.section;
+
+                // Update active state
+                document.querySelectorAll('.sidebar-link').forEach(l => l.classList.remove('active'));
+                link.classList.add('active');
+
+                // Map sections to element IDs or scroll targets
+                const sectionMap = {
+                    'overview': null,     // show main content
+                    'lessons': 'lessonsList',
+                    'progress': 'progressSection',
+                    'teachers': null,
+                    'calendar': null,
+                    'profile': 'sectionProfile',
+                    'settings': 'sectionSettings'
+                };
+
+                // Hide profile/settings sections
+                const hideable = ['sectionProfile', 'sectionSettings'];
+                hideable.forEach(id => {
+                    const el = document.getElementById(id);
+                    if (el) el.style.display = 'none';
+                });
+
+                const mainContent = document.getElementById('mainContent');
+
+                if (section === 'profile' || section === 'settings') {
+                    if (mainContent) mainContent.style.display = 'none';
+                    const target = document.getElementById(sectionMap[section]);
+                    if (target) target.style.display = 'block';
+                    if (section === 'profile') loadProfile();
+                } else {
+                    if (mainContent) mainContent.style.display = '';
+
+                    // Scroll to section if applicable
+                    const targetId = sectionMap[section];
+                    if (targetId) {
+                        const el = document.getElementById(targetId);
+                        if (el) setTimeout(() => el.scrollIntoView({ behavior: 'smooth' }), 50);
+                    }
+                }
+
+                // Close mobile sidebar
+                if (window.innerWidth <= 768 && sidebar) sidebar.classList.remove('open');
+            });
+        });
+    }
+
+    function loadProfile() {
+        const el = (id) => document.getElementById(id);
+        el('profileName').textContent = user.name;
+        el('profileEmail').textContent = user.email;
+        el('profileRole').textContent = user.role.charAt(0).toUpperCase() + user.role.slice(1);
+        el('profileAvatar').textContent = API.getInitials(user.name);
+        el('profileLanguage').textContent = user.language || 'English';
+        el('profileJoined').textContent = user.created_at ? new Date(user.created_at).toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' }) : 'Recently';
     }
 
     function setupUserInfo(user) {
@@ -328,6 +390,155 @@ document.addEventListener('DOMContentLoaded', () => {
         if (viewTeachers) viewTeachers.addEventListener('click', () => {
             showToast('Teachers section coming soon!', 'info');
         });
+    }
+
+    // ========================
+    // AI SPEAKING BUDDY
+    // ========================
+    function setupAIBuddy() {
+        const input = document.getElementById('aiChatInput');
+        const sendBtn = document.getElementById('btnSendChat');
+        const chatWindow = document.getElementById('aiChatWindow');
+        let chatHistory = [];
+
+        if (!input || !sendBtn || !chatWindow) return;
+
+        function addBubble(text, isUser) {
+            const bubble = document.createElement('div');
+            bubble.style.padding = '12px 16px';
+            bubble.style.maxWidth = '80%';
+            bubble.style.lineHeight = '1.4';
+            if (isUser) {
+                bubble.style.background = 'rgba(255,255,255,0.1)';
+                bubble.style.borderRadius = '16px 16px 4px 16px';
+                bubble.style.alignSelf = 'flex-end';
+            } else {
+                bubble.style.background = 'rgba(56, 189, 248, 0.2)';
+                bubble.style.borderRadius = '16px 16px 16px 4px';
+                bubble.style.alignSelf = 'flex-start';
+            }
+            bubble.textContent = text;
+            chatWindow.appendChild(bubble);
+            chatWindow.scrollTop = chatWindow.scrollHeight;
+        }
+
+        async function handleSend() {
+            const text = input.value.trim();
+            if (!text) return;
+
+            input.value = '';
+            input.disabled = true;
+            sendBtn.disabled = true;
+
+            // Add user message
+            addBubble(text, true);
+            chatHistory.push({ role: "user", content: text });
+
+            // Add typing indicator
+            const typingBubble = document.createElement('div');
+            typingBubble.style.padding = '12px 16px';
+            typingBubble.style.background = 'rgba(56, 189, 248, 0.1)';
+            typingBubble.style.borderRadius = '16px 16px 16px 4px';
+            typingBubble.style.alignSelf = 'flex-start';
+            typingBubble.innerHTML = '<span class="dots">...</span>';
+            chatWindow.appendChild(typingBubble);
+            chatWindow.scrollTop = chatWindow.scrollHeight;
+
+            try {
+                const response = await API.chatWithBuddy(text, chatHistory.slice(-5));
+                chatWindow.removeChild(typingBubble);
+                addBubble(response.reply, false);
+                chatHistory.push({ role: "assistant", content: response.reply });
+            } catch (err) {
+                chatWindow.removeChild(typingBubble);
+                addBubble('Sorry, the AI is currently unavailable. Check back later!', false);
+                showToast(err.message, 'error');
+            } finally {
+                input.disabled = false;
+                sendBtn.disabled = false;
+                input.focus();
+            }
+        }
+
+        sendBtn.addEventListener('click', handleSend);
+        input.addEventListener('keydown', (e) => {
+            if (e.key === 'Enter') handleSend();
+        });
+
+        // Microphone Logic
+        const micBtn = document.getElementById('btnMicRecord');
+        let isRecording = false;
+        let mediaRecorder;
+        let audioChunks = [];
+
+        if (micBtn) {
+            micBtn.addEventListener('click', async () => {
+                if (isRecording) {
+                    mediaRecorder.stop();
+                    micBtn.innerHTML = '🎙️';
+                    micBtn.style.background = 'rgba(56, 189, 248, 0.2)';
+                    isRecording = false;
+                } else {
+                    try {
+                        const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+                        mediaRecorder = new MediaRecorder(stream);
+                        audioChunks = [];
+                        
+                        mediaRecorder.ondataavailable = e => {
+                            if (e.data.size > 0) audioChunks.push(e.data);
+                        };
+
+                        mediaRecorder.onstop = async () => {
+                            const audioBlob = new Blob(audioChunks, { type: 'audio/webm' });
+                            const reader = new FileReader();
+                            reader.readAsDataURL(audioBlob);
+                            reader.onloadend = async () => {
+                                const base64data = reader.result.split(',')[1];
+                                await handleAudioSend(base64data);
+                            };
+                            stream.getTracks().forEach(track => track.stop());
+                        };
+
+                        mediaRecorder.start();
+                        isRecording = true;
+                        micBtn.innerHTML = '⏹️';
+                        micBtn.style.background = 'rgba(239, 68, 68, 0.5)';
+                    } catch (err) {
+                        showToast('Microphone access denied or unavailable.', 'error');
+                    }
+                }
+            });
+        }
+
+        async function handleAudioSend(audioBase64) {
+            const typingBubble = document.createElement('div');
+            typingBubble.style.padding = '12px 16px';
+            typingBubble.style.background = 'rgba(56, 189, 248, 0.1)';
+            typingBubble.style.borderRadius = '16px 16px 16px 4px';
+            typingBubble.style.alignSelf = 'flex-start';
+            typingBubble.innerHTML = '<span class="dots">🎧 Transcribing & Thinking...</span>';
+            chatWindow.appendChild(typingBubble);
+            chatWindow.scrollTop = chatWindow.scrollHeight;
+
+            try {
+                const response = await API.chatAudioWithBuddy(audioBase64, chatHistory.slice(-5));
+                if (chatWindow.contains(typingBubble)) chatWindow.removeChild(typingBubble);
+                
+                if (response.success && response.userText) {
+                    addBubble(`🎙️ ` + response.userText, true);
+                    chatHistory.push({ role: "user", content: response.userText });
+                    
+                    addBubble(response.reply, false);
+                    chatHistory.push({ role: "assistant", content: response.reply });
+                } else {
+                   addBubble('Sorry, I couldn\'t understand the audio. Please type it!', false);
+                }
+            } catch (err) {
+                if (chatWindow.contains(typingBubble)) chatWindow.removeChild(typingBubble);
+                addBubble('Sorry, the AI is currently unavailable.', false);
+                showToast(err.message, 'error');
+            }
+        }
     }
 
     // ========================

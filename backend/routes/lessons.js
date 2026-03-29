@@ -109,7 +109,7 @@ router.get('/completed', authMiddleware, async (req, res) => {
 // =============================================
 router.post('/', authMiddleware, requireRole('teacher'), async (req, res) => {
     try {
-        const { title, description, scheduled_time, duration_minutes, student_id } = req.body;
+        const { title, description, scheduled_time, duration_minutes, student_id, lesson_plan } = req.body;
 
         if (!title || !scheduled_time) {
             return res.status(400).json({ error: 'Title and scheduled_time are required.' });
@@ -120,10 +120,10 @@ router.post('/', authMiddleware, requireRole('teacher'), async (req, res) => {
         const video_link = roomId;
 
         const result = await pool.query(
-            `INSERT INTO lessons (teacher_id, student_id, title, description, scheduled_time, duration_minutes, video_link)
-             VALUES ($1, $2, $3, $4, $5, $6, $7)
+            `INSERT INTO lessons (teacher_id, student_id, title, description, lesson_plan, scheduled_time, duration_minutes, video_link)
+             VALUES ($1, $2, $3, $4, $5, $6, $7, $8)
              RETURNING *`,
-            [req.user.id, student_id || null, title, description || '', scheduled_time, duration_minutes || 60, video_link]
+            [req.user.id, student_id || null, title, description || '', lesson_plan ? JSON.stringify(lesson_plan) : null, scheduled_time, duration_minutes || 60, video_link]
         );
 
         res.status(201).json({ success: true, lesson: result.rows[0] });
@@ -260,7 +260,8 @@ router.get('/:id/join', authMiddleware, async (req, res) => {
             success: true,
             video_link: lesson.video_link,
             room_name: lesson.video_link,
-            display_name: req.user.name
+            display_name: req.user.name,
+            lesson_plan: lesson.lesson_plan
         });
     } catch (err) {
         console.error('Join lesson error:', err);

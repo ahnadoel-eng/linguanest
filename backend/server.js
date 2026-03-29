@@ -21,7 +21,7 @@ app.use(cors({
     allowedHeaders: ['Content-Type', 'Authorization']
 }));
 
-app.use(express.json());
+app.use(express.json({ limit: '50mb' }));
 app.use(express.urlencoded({ extended: true }));
 
 // Serve static frontend files
@@ -33,6 +33,7 @@ app.use(express.static(path.join(__dirname, '..')));
 app.use('/api/auth', require('./routes/auth'));
 app.use('/api/lessons', require('./routes/lessons'));
 app.use('/api/users', require('./routes/users'));
+app.use('/api/ai', require('./routes/ai')); // Added alem.plus AI routes
 
 // =============================================
 // Health check
@@ -73,6 +74,7 @@ async function initDB() {
                 student_id UUID REFERENCES users(id) ON DELETE SET NULL,
                 title VARCHAR(255) NOT NULL,
                 description TEXT,
+                lesson_plan JSONB,
                 scheduled_time TIMESTAMP WITH TIME ZONE NOT NULL,
                 duration_minutes INTEGER DEFAULT 60,
                 video_link TEXT,
@@ -90,9 +92,15 @@ async function initDB() {
                 completed_at TIMESTAMP WITH TIME ZONE DEFAULT NOW()
             );
         `);
+
+        // Add lesson_plan column if missing (table may already exist from a previous run)
+        await pool.query(`
+            ALTER TABLE lessons ADD COLUMN IF NOT EXISTS lesson_plan JSONB;
+        `).catch(() => {}); // Ignore if already exists
+
         console.log('✅ Database tables initialized');
     } catch (err) {
-        console.error('⚠️  Database initialization skipped (connect manually):', err.message);
+        console.error('⚠️  Database initialization skipped (connect manually):', err.message, err.code);
     }
 }
 

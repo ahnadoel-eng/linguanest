@@ -21,6 +21,7 @@ document.addEventListener('DOMContentLoaded', () => {
     loadStudents();
     setupCreateLesson();
     setupQuickActions();
+    setupAIGenerator();
 
     // ========================
     // SIDEBAR
@@ -37,6 +38,64 @@ document.addEventListener('DOMContentLoaded', () => {
                 }
             });
         }
+
+        // Sidebar navigation — show/hide sections
+        document.querySelectorAll('.sidebar-link[data-section]').forEach(link => {
+            link.addEventListener('click', (e) => {
+                e.preventDefault();
+                const section = link.dataset.section;
+
+                document.querySelectorAll('.sidebar-link').forEach(l => l.classList.remove('active'));
+                link.classList.add('active');
+
+                const sectionMap = {
+                    'overview': null,
+                    'lessons': 'lessonsList',
+                    'students': 'studentsSection',
+                    'create': null,
+                    'calendar': null,
+                    'profile': 'sectionProfile',
+                    'settings': 'sectionSettings'
+                };
+
+                const hideable = ['sectionProfile', 'sectionSettings'];
+                hideable.forEach(id => {
+                    const el = document.getElementById(id);
+                    if (el) el.style.display = 'none';
+                });
+
+                const mainSections = document.querySelectorAll('.dashboard-main > .dashboard-topbar, .dashboard-main > .stat-cards, .dashboard-main > .dashboard-grid, .dashboard-main > .dashboard-card');
+
+                if (section === 'profile' || section === 'settings') {
+                    mainSections.forEach(el => el.style.display = 'none');
+                    const target = document.getElementById(sectionMap[section]);
+                    if (target) target.style.display = 'block';
+                    if (section === 'profile') loadProfile();
+                } else if (section === 'create') {
+                    if (mainContent) mainContent.style.display = '';
+                    document.getElementById('createLessonBtn')?.click();
+                } else {
+                    if (mainContent) mainContent.style.display = '';
+                    const targetId = sectionMap[section];
+                    if (targetId) {
+                        const el = document.getElementById(targetId);
+                        if (el) setTimeout(() => el.scrollIntoView({ behavior: 'smooth' }), 50);
+                    }
+                }
+
+                if (window.innerWidth <= 768 && sidebar) sidebar.classList.remove('open');
+            });
+        });
+    }
+
+    function loadProfile() {
+        const el = (id) => document.getElementById(id);
+        el('profileName').textContent = user.name;
+        el('profileEmail').textContent = user.email;
+        el('profileRole').textContent = user.role.charAt(0).toUpperCase() + user.role.slice(1);
+        el('profileAvatar').textContent = API.getInitials(user.name);
+        el('profileLanguage').textContent = user.language || 'English';
+        el('profileJoined').textContent = user.created_at ? new Date(user.created_at).toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' }) : 'Recently';
     }
 
     function setupUserInfo(user) {
@@ -285,7 +344,8 @@ document.addEventListener('DOMContentLoaded', () => {
                         description,
                         student_id: studentId || null,
                         scheduled_time,
-                        duration_minutes: duration
+                        duration_minutes: duration,
+                        lesson_plan: window._lastGeneratedPlan || null
                     });
 
                     closeModal('createLessonModal');
@@ -318,6 +378,113 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     // ========================
+    // AI LESSON GENERATOR
+    // ========================
+    function setupAIGenerator() {
+        const btn = document.getElementById('btnGenerateLesson');
+        const topicInput = document.getElementById('aiLessonTopic');
+        const levelSelect = document.getElementById('aiLessonLevel');
+        const loader = document.getElementById('aiLessonLoader');
+        const resultContainer = document.getElementById('aiLessonResult');
+
+        if (!btn) return;
+
+        btn.addEventListener('click', async () => {
+            const topic = topicInput.value.trim();
+            const level = levelSelect.value;
+            
+            if (!topic) {
+                showToast('Please enter a topic first.', 'error');
+                return;
+            }
+
+            btn.disabled = true;
+            resultContainer.style.display = 'none';
+            loader.style.display = 'flex';
+
+            try {
+                const response = await API.generateLesson(topic, level);
+                const plan = response.lesson;
+
+                // Store plan globally so "Use for lesson" can attach it
+                window._lastGeneratedPlan = plan;
+
+                let coverHtml = plan.cover_image ? `<img src="${plan.cover_image}" style="width:100%; height:160px; object-fit:cover; border-radius:8px; margin-bottom:16px;">` : '';
+
+                let newWordsHtml = (plan.new_words || plan.vocabulary || []).map(w => {
+                    const text = typeof w === 'string' ? w : (w.word ? `${w.word} — ${w.definition}` : JSON.stringify(w));
+                    return `<li style="margin-bottom:8px; padding:8px 12px; background:rgba(59,130,246,0.08); border-radius:8px;">📘 ${text}</li>`;
+                }).join('');
+
+                let discussionHtml = (plan.discussion_topics || []).map(q => {
+                    const text = typeof q === 'string' ? q : JSON.stringify(q);
+                    return `<li style="margin-bottom:8px; padding:8px 12px; background:rgba(16,185,129,0.08); border-radius:8px;">💬 ${text}</li>`;
+                }).join('');
+
+                let exercisesHtml = (plan.exercises || []).map(e => {
+                    const text = typeof e === 'string' ? e : JSON.stringify(e);
+                    return `<li style="margin-bottom:8px; padding:8px 12px; background:rgba(249,115,22,0.08); border-radius:8px;">📝 ${text}</li>`;
+                }).join('');
+
+                resultContainer.innerHTML = `
+                    ${coverHtml}
+                    <div style="display:flex; justify-content: space-between; align-items:flex-start; margin-bottom:16px;">
+                        <h4 style="font-size: 1.2rem; color: #fff;">${plan.title || topic}</h4>
+                        <button class="btn btn-ghost" id="btnUseForLesson" style="padding: 4px 12px; font-size: 0.8rem; white-space:nowrap;">
+                            + Use for lesson
+                        </button>
+                    </div>
+
+                    ${plan.greeting ? `
+                    <div style="background:rgba(139,92,246,0.1); border-left:3px solid #a855f7; padding:16px; border-radius:0 8px 8px 0; margin-bottom:20px;">
+                        <div style="font-size:0.75rem; text-transform:uppercase; color:#a855f7; margin-bottom:6px; font-weight:600;">🎤 Teacher Opening</div>
+                        <p style="color:var(--text-secondary); font-style:italic; line-height:1.6;">"${plan.greeting}"</p>
+                    </div>` : ''}
+
+                    <div style="display:grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 20px; margin-bottom:20px;">
+                        ${newWordsHtml ? `<div>
+                            <h5 style="color: var(--blue-300); margin-bottom: 12px; font-size: 0.85rem; text-transform: uppercase; font-weight:600;">📘 New Words</h5>
+                            <ul style="list-style:none; padding:0; color:var(--text-secondary); font-size:0.88rem;">${newWordsHtml}</ul>
+                        </div>` : ''}
+                        ${discussionHtml ? `<div>
+                            <h5 style="color: #34d399; margin-bottom: 12px; font-size: 0.85rem; text-transform: uppercase; font-weight:600;">💬 Discussion Topics</h5>
+                            <ul style="list-style:none; padding:0; color:var(--text-secondary); font-size:0.88rem;">${discussionHtml}</ul>
+                        </div>` : ''}
+                    </div>
+
+                    ${exercisesHtml ? `<div style="margin-bottom:20px;">
+                        <h5 style="color: #fb923c; margin-bottom: 12px; font-size: 0.85rem; text-transform: uppercase; font-weight:600;">📝 Exercises</h5>
+                        <ul style="list-style:none; padding:0; color:var(--text-secondary); font-size:0.88rem;">${exercisesHtml}</ul>
+                    </div>` : ''}
+
+                    ${plan.closing ? `
+                    <div style="background:rgba(16,185,129,0.1); border-left:3px solid #34d399; padding:16px; border-radius:0 8px 8px 0;">
+                        <div style="font-size:0.75rem; text-transform:uppercase; color:#34d399; margin-bottom:6px; font-weight:600;">🎓 Closing</div>
+                        <p style="color:var(--text-secondary); font-style:italic; line-height:1.6;">"${plan.closing}"</p>
+                    </div>` : ''}
+                `;
+
+                // Wire up "Use for lesson" button
+                document.getElementById('btnUseForLesson').addEventListener('click', () => {
+                    const titleInput = document.getElementById('lessonTitle');
+                    if (titleInput) titleInput.value = plan.title || topic;
+                    document.getElementById('createLessonBtn')?.click();
+                });
+                
+                loader.style.display = 'none';
+                resultContainer.style.display = 'block';
+                resultContainer.style.animation = 'fadeInUp 0.4s ease-out';
+                showToast('✨ AI Lesson plan generated!', 'success');
+            } catch (err) {
+                loader.style.display = 'none';
+                showToast('Failed to generate lesson via AI: ' + err.message, 'error');
+            } finally {
+                btn.disabled = false;
+            }
+        });
+    }
+
+    // ========================
     // JITSI VIDEO CALL
     // ========================
     window.startVideoCall = async function (lessonId, lessonTitle) {
@@ -326,9 +493,20 @@ document.addEventListener('DOMContentLoaded', () => {
             const roomName = data.room_name || `LinguaNest-${lessonId.split('-')[0]}`;
 
             document.getElementById('videoCallTitle').textContent = `📹 ${lessonTitle}`;
+            
+            // Show lesson plan sidebar if we have a plan
+            const sidebar = document.getElementById('lessonPlanSidebar');
+            const planContent = document.getElementById('lessonPlanContent');
+            if (data.lesson_plan && sidebar && planContent) {
+                const plan = typeof data.lesson_plan === 'string' ? JSON.parse(data.lesson_plan) : data.lesson_plan;
+                renderLessonPlanSidebar(plan, planContent);
+                sidebar.style.display = 'block';
+            } else {
+                if (sidebar) sidebar.style.display = 'none';
+            }
+
             openModal('videoCallModal');
 
-            // Load Jitsi Meet API
             if (!window.JitsiMeetExternalAPI) {
                 const script = document.createElement('script');
                 script.src = 'https://meet.jit.si/external_api.js';
@@ -338,9 +516,10 @@ document.addEventListener('DOMContentLoaded', () => {
                 initJitsi(roomName, data.display_name || user.name);
             }
         } catch (err) {
-            // Fallback: open Jitsi directly
             const roomName = `LinguaNest-${lessonId.split('-')[0]}`;
             document.getElementById('videoCallTitle').textContent = `📹 ${lessonTitle}`;
+            const sidebar = document.getElementById('lessonPlanSidebar');
+            if (sidebar) sidebar.style.display = 'none';
             openModal('videoCallModal');
 
             if (!window.JitsiMeetExternalAPI) {
@@ -353,6 +532,50 @@ document.addEventListener('DOMContentLoaded', () => {
             }
         }
     };
+
+    function renderLessonPlanSidebar(plan, container) {
+        let html = '';
+
+        if (plan.greeting) {
+            html += `<div style="background:rgba(139,92,246,0.1); padding:12px; border-radius:8px; margin-bottom:16px; border-left:3px solid #a855f7;">
+                <div style="font-size:0.7rem; text-transform:uppercase; color:#a855f7; margin-bottom:4px; font-weight:600;">🎤 Opening</div>
+                <p style="font-style:italic;">"${plan.greeting}"</p>
+            </div>`;
+        }
+
+        const words = plan.new_words || plan.vocabulary || [];
+        if (words.length > 0) {
+            html += `<div style="margin-bottom:16px;">
+                <div style="font-size:0.7rem; text-transform:uppercase; color:var(--blue-300); margin-bottom:8px; font-weight:600;">📘 New Words</div>
+                ${words.map(w => `<div style="padding:6px 0; border-bottom:1px solid rgba(255,255,255,0.05);">• ${typeof w === 'string' ? w : JSON.stringify(w)}</div>`).join('')}
+            </div>`;
+        }
+
+        const topics = plan.discussion_topics || [];
+        if (topics.length > 0) {
+            html += `<div style="margin-bottom:16px;">
+                <div style="font-size:0.7rem; text-transform:uppercase; color:#34d399; margin-bottom:8px; font-weight:600;">💬 Discussion</div>
+                ${topics.map(t => `<div style="padding:6px 0; border-bottom:1px solid rgba(255,255,255,0.05);">• ${typeof t === 'string' ? t : JSON.stringify(t)}</div>`).join('')}
+            </div>`;
+        }
+
+        const exercises = plan.exercises || [];
+        if (exercises.length > 0) {
+            html += `<div style="margin-bottom:16px;">
+                <div style="font-size:0.7rem; text-transform:uppercase; color:#fb923c; margin-bottom:8px; font-weight:600;">📝 Exercises</div>
+                ${exercises.map(e => `<div style="padding:6px 0; border-bottom:1px solid rgba(255,255,255,0.05);">• ${typeof e === 'string' ? e : JSON.stringify(e)}</div>`).join('')}
+            </div>`;
+        }
+
+        if (plan.closing) {
+            html += `<div style="background:rgba(16,185,129,0.1); padding:12px; border-radius:8px; border-left:3px solid #34d399;">
+                <div style="font-size:0.7rem; text-transform:uppercase; color:#34d399; margin-bottom:4px; font-weight:600;">🎓 Closing</div>
+                <p style="font-style:italic;">"${plan.closing}"</p>
+            </div>`;
+        }
+
+        container.innerHTML = html;
+    }
 
     function initJitsi(roomName, displayName) {
         const container = document.getElementById('jitsiContainer');
